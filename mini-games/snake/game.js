@@ -215,3 +215,44 @@ difficultySelect.addEventListener("change", (event) => {
     // 取消選單焦點，防止玩家按下方向鍵時變成在切換下拉選單
     event.target.blur(); 
 });
+
+// 綁定手機版虛擬按鈕事件
+function bindVirtualKeys() {
+    const btnUp = document.getElementById("btn-up");
+    const btnDown = document.getElementById("btn-down");
+    const btnLeft = document.getElementById("btn-left");
+    const btnRight = document.getElementById("btn-right");
+
+    // 點擊上
+    btnUp.addEventListener("click", () => {
+        if (dy !== 1) { dx = 0; dy = -1; }
+    });
+    // 點擊下
+    btnDown.addEventListener("click", () => {
+        if (dy !== -1) { dx = 0; dy = 1; }
+    });
+    // 點擊左
+    btnLeft.addEventListener("click", () => {
+        if (dx !== 1) { dx = -1; dy = 0; }
+    });
+    // 點擊右
+    btnRight.addEventListener("click", () => {
+        if (dx !== -1) { dx = 1; dy = 0; }
+    });
+    
+    // 針對手機觸控優化：防止點擊按鈕時造成網頁放大或連擊反彈
+    const buttons = [btnUp, btnDown, btnLeft, btnRight];
+    buttons.forEach(btn => {
+        btn.addEventListener("touchstart", (e) => {
+            e.preventDefault(); // 阻擋預設觸控行為
+            btn.click();        // 觸發上面的 click 邏輯
+        }, { passive: false });
+    });
+}
+
+// 修改原本的 window.onload，記得在裡面呼叫剛剛寫的函數
+const originalOnload = window.onload;
+window.onload = () => {
+    if (originalOnload) originalOnload();
+    bindVirtualKeys(); // 啟動虛擬鍵盤綁定
+};
