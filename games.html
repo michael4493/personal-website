@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小遊戲專區</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html" data-i18n="nav_home">首頁</a></li>
+            <li><a href="games.html" data-i18n="nav_games">小遊戲專區</a></li>
+        </ul>
+        <select id="language-select" class="lang-picker">
+            <option value="zh-TW">繁體中文</option>
+            <option value="en">English</option>
+        </select>
+    </nav>
+
+    <main>
+        <h2 data-i18n="lobby_title">小遊戲大廳</h2>
+        <div class="game-grid">
+            <!-- 遊戲卡片 1：貪吃蛇 -->
+            <div class="game-card">
+                <!-- 遊戲預覽圖 (使用 src="images/snake-thumb.png" 替換佔位圖) -->
+                <img src="images/snake-thumb.png" alt="貪吃蛇預覽圖" class="game-thumbnail">
+                
+                <div class="game-info">
+                    <h3 data-i18n="game_snake_title">貪吃蛇</h3>
+                    <p data-i18n="game_snake_desc">經典的貪吃蛇遊戲，挑戰最高分！</p>
+                    <a href="mini-games/snake/index.html" class="btn" data-i18n="btn_start_game">開始遊戲</a>
+                </div>
+            </div>
+
+            <!-- 遊戲卡片 2：造橋英雄 -->
+            <div class="game-card">
+                <!-- 遊戲預覽圖 (使用 src="images/bridge-thumb.png" 替換佔位圖) -->
+                <img src="images/bridge-thumb.png" alt="造橋英雄預覽圖" class="game-thumbnail">
+                
+                <div class="game-info">
+                    <h3 data-i18n="game_bridge_title">造橋英雄</h3>
+                    <p data-i18n="game_bridge_desc">長按伸長橋樑，幫助小人安全走到對岸！</p>
+                    <a href="mini-games/bridge/index.html" class="btn" data-i18n="btn_start_game">開始遊戲</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

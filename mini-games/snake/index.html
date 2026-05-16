@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>貪吃蛇 - 我的小遊戲</title>
+    <!-- 引入全域樣式與遊戲專屬樣式 -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- 頂部導覽區 -->
+        <div class="game-header">
+            <a href="../../games.html" class="btn back-btn">←</a>
+            <h2 data-i18n="game_snake_title">貪吃蛇</h2>
+            <!-- 語言切換選單 -->
+            <select id="language-select" class="lang-picker">
+                <option value="zh-TW">繁體中文</option>
+                <option value="en">English</option>
+            </select>
+        </div>
+        
+        <!-- 控制與分數面板 -->
+        <div class="controls-board">
+            <div class="difficulty-selector">
+                <span data-i18n="game_difficulty">難度：</span>
+                <select id="difficultySelect" class="diff-picker">
+                    <!-- value 對應遊戲的更新速度(毫秒)，數字越小越快 -->
+                    <option value="150" data-i18n="diff_easy">簡單</option>
+                    <option value="100" selected data-i18n="diff_normal">普通</option>
+                    <option value="60" data-i18n="diff_hard">困難</option>
+                </select>
+            </div>
+            <div class="score-display">
+                <span data-i18n="game_score">分數：</span>
+                <span id="score">0</span>
+            </div>
+        </div>
+
+        <!-- 遊戲主體區域 -->
+        <div class="canvas-wrapper">
+            <canvas id="gameCanvas" width="400" height="400"></canvas>
+            
+            <!-- 遊戲結束時覆蓋在畫布上的畫面 -->
+            <div id="gameOverScreen" class="hidden">
+                <h3 data-i18n="game_over">遊戲結束！</h3>
+                <button id="restartBtn" class="btn" data-i18n="btn_restart">重新開始</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 載入雙語邏輯與遊戲邏輯 -->
+    <script src="../../js/main.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
