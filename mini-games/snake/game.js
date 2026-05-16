@@ -63,13 +63,11 @@ function gameLoop() {
 function clearCanvas() {
     for (let row = 0; row < tileCount; row++) {
         for (let col = 0; col < tileCount; col++) {
-            // 利用行列相加的奇偶數來交替顏色
             if ((row + col) % 2 === 0) {
-                ctx.fillStyle = "#2c3e50"; // 原本的深藍灰色
+                ctx.fillStyle = "#2c3e50"; 
             } else {
-                ctx.fillStyle = "#34495e"; // 稍微亮一點的藍灰色
+                ctx.fillStyle = "#34495e"; 
             }
-            // 繪製每一個小方格
             ctx.fillRect(col * gridSize, row * gridSize, gridSize, gridSize);
         }
     }
@@ -78,7 +76,7 @@ function clearCanvas() {
 // 繪製貪吃蛇
 function drawSnake() {
     snake.forEach((segment, index) => {
-        ctx.fillStyle = index === 0 ? "#2ecc71" : "#27ae60"; // 頭部顏色較亮
+        ctx.fillStyle = index === 0 ? "#2ecc71" : "#27ae60"; 
         ctx.strokeStyle = "#145c32";
         ctx.fillRect(segment.x * gridSize, segment.y * gridSize, gridSize, gridSize);
         ctx.strokeRect(segment.x * gridSize, segment.y * gridSize, gridSize, gridSize);
@@ -87,18 +85,15 @@ function drawSnake() {
 
 // 移動貪吃蛇
 function moveSnake() {
-    // 根據方向計算新頭部的位置
     const head = { x: snake[0].x + dx, y: snake[0].y + dy };
-    snake.unshift(head); // 將新頭部加入陣列最前方
+    snake.unshift(head); 
 
-    // 檢查是否吃到食物
     if (head.x === foodX && head.y === foodY) {
         score += 10;
         scoreElement.textContent = score;
-        spawnFood(); // 重新產生食物
-        // 吃到食物就不移除尾巴，蛇就會變長
+        spawnFood(); 
     } else {
-        snake.pop(); // 沒吃到食物，移除最後一節尾巴
+        snake.pop(); 
     }
 }
 
@@ -107,7 +102,6 @@ function spawnFood() {
     foodX = Math.floor(Math.random() * tileCount);
     foodY = Math.floor(Math.random() * tileCount);
 
-    // 確保食物不會生在蛇的身上
     snake.forEach(segment => {
         if (segment.x === foodX && segment.y === foodY) {
             spawnFood();
@@ -115,25 +109,21 @@ function spawnFood() {
     });
 }
 
-// 繪製食物
 // 繪製食物 (精緻版蘋果)
 function drawFood() {
     const centerX = foodX * gridSize + gridSize / 2;
     const centerY = foodY * gridSize + gridSize / 2;
 
-    // 1. 畫蘋果主體 (紅色)
     ctx.fillStyle = "#e74c3c";
     ctx.beginPath();
     ctx.arc(centerX, centerY, gridSize / 2 - 2, 0, 2 * Math.PI);
     ctx.fill();
 
-    // 2. 畫蘋果的左上角高光 (半透明白色，增加立體感)
     ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
     ctx.beginPath();
     ctx.arc(centerX - 3, centerY - 3, 2.5, 0, 2 * Math.PI);
     ctx.fill();
 
-    // 3. 畫蘋果右上方的小葉子 (綠色)
     ctx.fillStyle = "#27ae60";
     ctx.beginPath();
     ctx.arc(centerX + 4, centerY - 6, 3, 0, 2 * Math.PI);
@@ -144,12 +134,10 @@ function drawFood() {
 function checkGameOver() {
     const head = snake[0];
 
-    // 1. 撞到牆壁
     if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
         return true;
     }
 
-    // 2. 撞到自己 (從第 4 節開始檢查，因為前 3 節不可能撞到)
     for (let i = 4; i < snake.length; i++) {
         if (head.x === snake[i].x && head.y === snake[i].y) {
             return true;
@@ -159,9 +147,8 @@ function checkGameOver() {
     return false;
 }
 
-// 監聽鍵盤方向鍵
+// 監聽鍵盤實體方向鍵與 WASD
 document.addEventListener("keydown", (event) => {
-    // 阻擋空白鍵和方向鍵的網頁預設捲動行為
     if ([32, 37, 38, 39, 40].indexOf(event.keyCode) > -1) {
         event.preventDefault();
     }
@@ -177,7 +164,6 @@ document.addEventListener("keydown", (event) => {
 
     const keyPressed = event.keyCode;
     
-    // 避免蛇直接 180 度反轉自殺
     const goingUp = dy === -1;
     const goingDown = dy === 1;
     const goingRight = dx === 1;
@@ -204,55 +190,40 @@ document.addEventListener("keydown", (event) => {
 // 綁定重新開始按鈕
 restartBtn.addEventListener("click", initGame);
 
-// 網頁載入完成後啟動遊戲
-window.onload = () => {
-    initGame();
-};
-
-// 監聽難度切換
+// 監難度切換
 difficultySelect.addEventListener("change", (event) => {
     speed = parseInt(event.target.value);
-    // 取消選單焦點，防止玩家按下方向鍵時變成在切換下拉選單
     event.target.blur(); 
 });
 
-// 綁定手機版虛擬按鈕事件
+// 【已更新】綁定手機/滑鼠通用虛擬按鈕事件 (使用 pointerdown 解決沒反應問題)
 function bindVirtualKeys() {
     const btnUp = document.getElementById("btn-up");
     const btnDown = document.getElementById("btn-down");
     const btnLeft = document.getElementById("btn-left");
     const btnRight = document.getElementById("btn-right");
 
-    // 點擊上
-    btnUp.addEventListener("click", () => {
+    // 封裝轉向邏輯，阻止預設行為防止頁面捲動或放大
+    btnUp.addEventListener("pointerdown", (e) => {
+        e.preventDefault();
         if (dy !== 1) { dx = 0; dy = -1; }
     });
-    // 點擊下
-    btnDown.addEventListener("click", () => {
+    btnDown.addEventListener("pointerdown", (e) => {
+        e.preventDefault();
         if (dy !== -1) { dx = 0; dy = 1; }
     });
-    // 點擊左
-    btnLeft.addEventListener("click", () => {
+    btnLeft.addEventListener("pointerdown", (e) => {
+        e.preventDefault();
         if (dx !== 1) { dx = -1; dy = 0; }
     });
-    // 點擊右
-    btnRight.addEventListener("click", () => {
+    btnRight.addEventListener("pointerdown", (e) => {
+        e.preventDefault();
         if (dx !== -1) { dx = 1; dy = 0; }
-    });
-    
-    // 針對手機觸控優化：防止點擊按鈕時造成網頁放大或連擊反彈
-    const buttons = [btnUp, btnDown, btnLeft, btnRight];
-    buttons.forEach(btn => {
-        btn.addEventListener("touchstart", (e) => {
-            e.preventDefault(); // 阻擋預設觸控行為
-            btn.click();        // 觸發上面的 click 邏輯
-        }, { passive: false });
     });
 }
 
-// 修改原本的 window.onload，記得在裡面呼叫剛剛寫的函數
-const originalOnload = window.onload;
+// 網頁載入完成後啟動遊戲與綁定
 window.onload = () => {
-    if (originalOnload) originalOnload();
-    bindVirtualKeys(); // 啟動虛擬鍵盤綁定
+    initGame();
+    bindVirtualKeys();
 };

@@ -68,7 +68,7 @@ canvas {
     display: block;
 }
 
-/* 遊戲結束畫面 (覆蓋在畫布上) */
+/* 遊戲結束畫面 */
 #gameOverScreen {
     position: absolute;
     top: 0;
@@ -89,57 +89,61 @@ canvas {
     margin-bottom: 20px;
 }
 
-/* 隱藏元素的類別 */
 .hidden {
     display: none !important;
 }
 
-/* 虛擬鍵盤排版 (預設在電腦版隱藏) */
+/* 【已更新】WASD 虛擬鍵盤機械外觀樣式 */
 .virtual-keyboard {
     display: none; 
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
-    gap: 5px;
+    margin-top: 25px;
+    gap: 10px;
 }
 
-.middle-row {
+.keyboard-row {
     display: flex;
-    gap: 40px; /* 留出中間的空隙 */
-    align-items: center;
+    gap: 10px;
 }
 
-/* 每個方向鍵的精美樣式 */
+/* 精美機械鍵帽按鈕 */
 .nav-btn {
-    width: 60px;
-    height: 60px;
-    font-size: 1.5rem;
+    width: 75px;         /* 變大：從 60px 放大到 75px */
+    height: 75px;        /* 變大：從 60px 放大到 75px */
+    font-size: 1.6rem;
+    font-weight: bold;
     background-color: #34495e;
     color: white;
     border: none;
-    border-radius: 50%; /* 圓形按鈕 */
-    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    border-radius: 10px;  /* 方中帶圓的優雅結構 */
+    /* 鍵帽底部的立體 3D 厚度陰影 */
+    box-shadow: 0 6px 0px #2c3e50, 0 8px 10px rgba(0,0,0,0.3); 
     cursor: pointer;
-    user-select: none; /* 防止長按時彈出瀏覽器選單 */
+    user-select: none;
     -webkit-user-select: none;
-    transition: background-color 0.1s;
+    position: relative;
+    transition: all 0.05s ease;
+    touch-action: manipulation; /* 優化手機連續點擊的速度 */
 }
 
+/* 按鈕按下去時的物理下沉視覺回饋 */
 .nav-btn:active {
-    background-color: #2ecc71; /* 按下去時變綠色，增加回饋感 */
+    transform: translateY(4px); 
+    box-shadow: 0 2px 0px #2c3e50, 0 4px 6px rgba(0,0,0,0.2);
+    background-color: #2ecc71; /* 觸發時閃爍綠色 */
 }
 
-.spacer {
-    width: 20px;
+.key-spacer {
+    width: 75px;
+    height: 75px;
 }
 
-/* 💡 關鍵：當螢幕寬度小於 600px (手機版) 時才顯示按鈕 */
+/* 當螢幕寬度小於 600px (手機版) 或在開發者手機模式下才顯示按鈕 */
 @media (max-width: 600px) {
     .virtual-keyboard {
         display: flex;
     }
-    
-    /* 手機版將畫布稍微縮小，避免超出螢幕 */
     canvas {
         width: 100% !important;
         height: auto !important;
